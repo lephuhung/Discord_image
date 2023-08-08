@@ -3,54 +3,81 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class user(BaseModel):
-    name: str
-    hashed_password: str
-    is_active: bool
+class User(BaseModel):
+    username: str
+    password: str
+    is_active: Union[bool, None] = None
+
     class Config:
         orm_mode = True
 
+class CurrentUser(BaseModel):
+    username: str
+    is_active: Union[bool, None] = None
+    class Config:
+        orm_mode = True
+
+class UserInDB(User):
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
 class agents(BaseModel):
-    id: int
     name: str
-    token: str
     zalo_name: str
     zalo_number_target: str
     webhook_id: int
+    # created_at: datetime
+    # ended_at: datetime
 
     class Config:
         orm_mode = True
+
 
 class webhooks(BaseModel):
-    url_webhooks: str
-    webhooks_name: str
-    created_at: datetime
-    ended_at: datetime
+    url_webhook: str
+    webhook_name: str
+    # created_at: datetime
+    # ended_at: datetime
+
+    class Config:
+        orm_mode = True
+
 
 class loggers(BaseModel):
-    IP: str
+    ip: str
     user_agents: str
     device: str
-    IP_info: str
+    ip_info: str
     filename: str
     token: str
-    timestamp: datetime
+    time_stamp: datetime
     created_at: datetime
+
     class Config:
         orm_mode = True
+
 
 class logger_error(BaseModel):
-    IP: str
+    ip: str
     user_agents: str
     device: str
-    IP_info: str
+    ip_info: str
     filename: Union[str, None] = None
     token: Union[str, None] = None
-    timestamp: datetime
+    time_stamp: datetime
     created_at: datetime
+
     class Config:
         orm_mode = True
 
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 
+class TokenData(BaseModel):
+    username: Union[str, None] = None

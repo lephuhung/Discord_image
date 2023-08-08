@@ -8,8 +8,8 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    username = Column(String, unique=True, index=True)
+    password = Column(String)
     is_active = Column(Boolean, default=True)
     # items = relationship("Item", back_populates="owner")
 
@@ -22,6 +22,8 @@ class agents(Base):
     token = Column(String)
     zalo_name = Column(String)
     zalo_number_target = Column(String)
+    created_at = Column(DateTime)
+    ended_at = Column(DateTime)
     webhook_id = Column(Integer, ForeignKey("webhooks.id"))
 
     # owner = relationship("User", back_populates="items")
@@ -40,23 +42,23 @@ class logger(Base):
     __tablename__ = "logger"
 
     id = Column(Integer, primary_key=True, index=True)
-    IP = Column(String)
+    ip = Column(String)
     user_agents = Column(String)
     device=Column(String)
-    IP_info = Column(String)
+    ip_info = Column(String)
     filename = Column(String)
     token = Column(String, ForeignKey("agents.token"))
-    timestamp = Column(DateTime)
+    time_stamp = Column(DateTime)
     created_at = Column(DateTime)
 
 class logger_error(Base):
     __tablename__="logger_error"
     id = Column(Integer, primary_key=True, index=True)
-    IP = Column(String)
+    ip = Column(String)
     user_agents = Column(String)
     device=Column(String)
-    IP_info = Column(String)
+    ip_info = Column(String)
     filename = Column(String, None)
     token = Column(String, None, ForeignKey("agents.token"))
-    timestamp = Column(DateTime)
+    time_stamp = Column(DateTime)
     created_at = Column(DateTime)

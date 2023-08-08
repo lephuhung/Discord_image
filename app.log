@@ -61,3 +61,8 @@
 [INFO] [2023-07-16 20:55:11] IP Address: 127.0.0.1, 
 [INFO] [2023-07-16 20:57:20] IP Address: 127.0.0.1, 
 [INFO] [2023-07-16 20:58:29] IP Address: 127.0.0.1, 
+[ERROR] Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
