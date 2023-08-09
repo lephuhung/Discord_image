@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 import os
 import model
 from sqlalchemy.orm import Session
-uri_path= '/home/lph77/Documents/GitHub/FastAPI/image/'
+uri_path= '/root/Discord_image/image/'
 '''
 database setup
 '''
@@ -85,7 +85,7 @@ async def read_root(request: Request, user_agent: str = Header(None, convert_und
     timestamp = request.state.timestamp
     port = request.state.port
     ip = request.headers.ip
-    CheckIP('172.225.56.17', url=config["webhook_error"],useragent=user_agent, timestamp=timestamp, port=port, url_thumbnail=config['image'], botname='Cảnh báo server ROOT', db=db)
+    CheckIP(ip, url=config["webhook_error"],useragent=user_agent, timestamp=timestamp, port=port, url_thumbnail=config['image'], botname='Cảnh báo server ROOT', db=db)
     return {"Hello": "World FastAPI"}
 #  Login to get Token
 @app.post("/login", response_model=schemas.Token)
@@ -128,9 +128,9 @@ async def get_image(background_tasks: BackgroundTasks,request: Request, filename
     image_path = f"{uri_path}{filename}"
     path = Path(image_path)
     if not path.is_file() or token==None or not curd.check_exists_token(db, token=token):
-        background_tasks.add_task(CheckIP, '172.225.56.17', url=config["webhook_error"],useragent=user_agent, token=token, timestamp=timestamp, port=port, filename=filename, url_thumbnail=config['image'], botname='Cảnh báo server configuration',db=db)
+        background_tasks.add_task(CheckIP, ip, url=config["webhook_error"],useragent=user_agent, token=token, timestamp=timestamp, port=port, filename=filename, url_thumbnail=config['image'], botname='Cảnh báo server configuration',db=db)
         return FileResponse(f'{uri_path}taylor.gif', media_type="image/gif")
-    background_tasks.add_task(CheckIP,'172.225.56.17', url=config["webhook"],useragent=user_agent, token=token, timestamp=timestamp, port=port, filename=filename, url_thumbnail=config['image'], botname='Image Logger', db=db)
+    background_tasks.add_task(CheckIP,ip, url=config["webhook"],useragent=user_agent, token=token, timestamp=timestamp, port=port, filename=filename, url_thumbnail=config['image'], botname='Image Logger', db=db)
     return FileResponse(image_path, media_type="image/gif")
 '''
 Agents managent 

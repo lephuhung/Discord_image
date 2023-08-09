@@ -3,3 +3,4 @@ sqlalchemy
 uvicorn
 python-jose[cryptography]
 passlib[bcrypt]
+sqlalchemy-binary
