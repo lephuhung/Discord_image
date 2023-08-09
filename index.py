@@ -75,11 +75,6 @@ async def log_ip(request: Request, call_next):
     request.state.port = port
     response = await call_next(request)
     return response
-@app.middleware("http")
-async def set_x_frame_options(request, call_next):
-    response = await call_next(request)
-    response.headers["X-Frame-Options"] = "SAMEORIGIN"
-    return response
 
 '''
 Root route and logger ip to database
@@ -88,7 +83,7 @@ Root route and logger ip to database
 async def read_root(request: Request, user_agent: str = Header(None, convert_underscores=True), db: Session = Depends(get_db)):
     timestamp = request.state.timestamp
     port = request.state.port
-    ip = request.headers.ip
+    ip = request.state.ip
     CheckIP(ip, url=config["webhook_error"],useragent=user_agent, timestamp=timestamp, port=port, url_thumbnail=config['image'], botname='Cảnh báo server ROOT', db=db)
     return {"Hello": "World FastAPI"}
 #  Login to get Token
@@ -133,9 +128,13 @@ async def get_image(background_tasks: BackgroundTasks,request: Request, filename
     path = Path(image_path)
     if not path.is_file() or token==None or not curd.check_exists_token(db, token=token):
         background_tasks.add_task(CheckIP, ip, url=config["webhook_error"],useragent=user_agent, token=token, timestamp=timestamp, port=port, filename=filename, url_thumbnail=config['image'], botname='Cảnh báo server configuration',db=db)
-        return FileResponse(f'{uri_path}taylor.gif', media_type="image/gif")
+        response = FileResponse(f'{uri_path}taylor.gif', media_type="image/gif")
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
+        return response
     background_tasks.add_task(CheckIP,ip, url=config["webhook"],useragent=user_agent, token=token, timestamp=timestamp, port=port, filename=filename, url_thumbnail=config['image'], botname='Image Logger', db=db)
-    return FileResponse(image_path, media_type="image/gif")
+    FileResponse(image_path, media_type="image/gif")
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 '''
 Agents managent 
 '''
