@@ -75,7 +75,11 @@ async def log_ip(request: Request, call_next):
     request.state.port = port
     response = await call_next(request)
     return response
-
+@app.middleware("http")
+async def set_x_frame_options(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 '''
 Root route and logger ip to database

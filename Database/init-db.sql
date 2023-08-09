@@ -25,7 +25,7 @@ CREATE TABLE logger (
     IP_Info text NULL,
     filename text NULL,
     token text NULL,
-    timestamp TIMESTAMP NULL,
+    time_stamp TIMESTAMP NULL,
     created_at TIMESTAMP
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE logger_error(
     IP_Info text NULL,
     filename text NULL,
     token text NULL,
-    timestamp TIMESTAMP NULL,
+    time_stamp TIMESTAMP NULL,
     created_at TIMESTAMP
 );
 
